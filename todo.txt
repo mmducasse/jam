@@ -1,0 +1,14 @@
+
++ Keyboard input
++ Draw sprite
++ Animate sprites
++ Custom window size
+- Web build
+- Enemies
+- Scrolling background
+- Bullets
+- Score
+- Health
+- Power ups
+- Title screen
+- Loading screen
