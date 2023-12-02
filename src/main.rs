@@ -39,6 +39,7 @@ fn main() {
                 update_background,
             ),
         )
+        .add_systems(PostUpdate, keep_in_bounds)
         .run();
 }
 
@@ -49,7 +50,7 @@ fn setup(
 ) {
     commands.spawn(Camera2dBundle::default());
     commands.spawn(PlayerBundle::new(
-        Vec2::new(0.0, 0.0),
+        Vec2::new(0.0, -WINDOW_SIZE.y / 4.0),
         &asset_server,
         &mut texture_atlases,
     ));

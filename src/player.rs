@@ -1,9 +1,15 @@
 use bevy::prelude::*;
 
-use crate::anim::*;
+use crate::{
+    anim::*,
+    consts::{PLAYER_SIZE, WINDOW_SIZE},
+};
 
 #[derive(Component)]
 pub struct Controlled;
+
+#[derive(Component)]
+pub struct KeepInBounds;
 
 #[derive(Bundle)]
 pub struct PlayerBundle {
@@ -11,6 +17,7 @@ pub struct PlayerBundle {
     pub animation_indices: AnimationIndices,
     pub animation_timer: AnimationTimer,
     pub controlled: Controlled,
+    keep_in_bounds: KeepInBounds,
 }
 
 impl PlayerBundle {
@@ -38,6 +45,18 @@ impl PlayerBundle {
             controlled: Controlled,
             animation_indices,
             animation_timer: AnimationTimer(Timer::from_seconds(0.1, TimerMode::Repeating)),
+            keep_in_bounds: KeepInBounds,
         }
+    }
+}
+
+pub fn keep_in_bounds(mut query: Query<&mut Transform, With<KeepInBounds>>) {
+    let radius = (WINDOW_SIZE / 2.0) - (PLAYER_SIZE / 4.0);
+
+    for mut transform in &mut query {
+        let pos = &mut transform.translation;
+
+        pos.x = pos.x.clamp(-radius.x, radius.x);
+        pos.y = pos.y.clamp(-radius.y, 0.0);
     }
 }
