@@ -1,13 +1,18 @@
 mod anim;
 mod background;
+mod bullet;
 mod consts;
+mod direction;
 mod input;
+mod physics;
 mod player;
+mod team;
 
 use anim::*;
 use background::*;
 use bevy::{prelude::*, window::WindowResolution};
 use input::*;
+use physics::*;
 use player::*;
 
 use consts::*;
@@ -37,6 +42,9 @@ fn main() {
                 animate_sprite,
                 handle_keyboard_move_input,
                 update_background,
+                handle_fire_button_press,
+                move_velocity,
+                die_outside,
             ),
         )
         .add_systems(PostUpdate, keep_in_bounds)

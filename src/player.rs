@@ -2,7 +2,10 @@ use bevy::prelude::*;
 
 use crate::{
     anim::*,
+    bullet::{BulletBundle, BulletType},
     consts::{PLAYER_SIZE, WINDOW_SIZE},
+    direction::UP_ANGLE,
+    team::TeamId,
 };
 
 #[derive(Component)]
@@ -58,5 +61,26 @@ pub fn keep_in_bounds(mut query: Query<&mut Transform, With<KeepInBounds>>) {
 
         pos.x = pos.x.clamp(-radius.x, radius.x);
         pos.y = pos.y.clamp(-radius.y, 0.0);
+    }
+}
+
+pub fn handle_fire_button_press(
+    mut commands: Commands,
+    keyboard_input: Res<Input<KeyCode>>,
+    mut query: Query<&mut Transform, With<Controlled>>,
+    asset_server: Res<AssetServer>,
+    mut texture_atlases: ResMut<Assets<TextureAtlas>>,
+) {
+    if keyboard_input.just_pressed(KeyCode::Space) {
+        let pos = query.single_mut().translation.truncate();
+        let bullet = BulletBundle::new(
+            pos,
+            UP_ANGLE,
+            BulletType::PlayerCannon,
+            TeamId::Player,
+            &asset_server,
+            &mut texture_atlases,
+        );
+        commands.spawn(bullet);
     }
 }
