@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{player::*, consts::*};
+use crate::{consts::*, player::*};
 
 pub fn handle_keyboard_move_input(
     keyboard_input: Res<Input<KeyCode>>,

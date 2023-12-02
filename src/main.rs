@@ -1,9 +1,11 @@
 mod anim;
+mod background;
 mod consts;
 mod input;
 mod player;
 
 use anim::*;
+use background::*;
 use bevy::{prelude::*, window::WindowResolution};
 use input::*;
 use player::*;
@@ -29,7 +31,14 @@ fn main() {
                 .set(ImagePlugin::default_nearest()),
         )
         .add_systems(Startup, setup)
-        .add_systems(Update, (animate_sprite, handle_keyboard_move_input))
+        .add_systems(
+            Update,
+            (
+                animate_sprite,
+                handle_keyboard_move_input,
+                update_background,
+            ),
+        )
         .run();
 }
 
@@ -44,4 +53,5 @@ fn setup(
         &asset_server,
         &mut texture_atlases,
     ));
+    commands.spawn(BackgroundBundle::new(&asset_server));
 }
